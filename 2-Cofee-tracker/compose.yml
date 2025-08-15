@@ -1,0 +1,23 @@
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./app/data:/data
+    networks:
+      - coffee-net
+
+  generator:
+    image: ubuntu:22.04
+    working_dir: /data
+    volumes:
+      - ./app/data:/data
+      - ./scripts:/scripts
+    command: sh -c "apt update && apt install -y bash && /scripts/generate_data.sh"
+    networks:
+      - coffee-net
+
+networks:
+  coffee-net:
+    driver: bridge

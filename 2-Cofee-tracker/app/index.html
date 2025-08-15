@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Трекер цен на кофе</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>📉 График изменения цены на кофе</h1>
+  <canvas id="priceChart" width="400" height="200"></canvas>
+
+  <script>
+    const ctx = document.getElementById('priceChart').getContext('2d');
+    const chart = new Chart(ctx, {
+      type: 'line',
+       {
+        labels: [],
+        datasets: [{
+          label: 'Цена (руб)',
+           [],
+          borderColor: 'rgb(75, 192, 192)',
+          tension: 0.1
+        }]
+      },
+      options: {
+        animation: false,
+        scales: {
+          y: { beginAtZero: false }
+        }
+      }
+    });
+
+    // Обновление каждые 3 сек
+    setInterval(() => {
+      fetch('/data')
+        .then(r => r.json())
+        .then(data => {
+          const time = new Date().toLocaleTimeString();
+          chart.data.labels.push(time);
+          chart.data.datasets[0].data.push(data.price);
+          if (chart.data.labels.length > 10) {
+            chart.data.labels.shift();
+            chart.data.datasets[0].data.shift();
+          }
+          chart.update();
+        });
+    }, 3000);
+  </script>
+</body>
+</html>
