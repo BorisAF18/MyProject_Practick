@@ -4,7 +4,7 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - ./app/data:/data
+      - data_volume:/data
     networks:
       - coffee-net
 
@@ -12,7 +12,7 @@ services:
     image: ubuntu:22.04
     working_dir: /data
     volumes:
-      - ./app/data:/data
+      - data_volume:/data
       - ./scripts:/scripts
     command: sh -c "apt update && apt install -y bash && /scripts/generate_data.sh"
     networks:
@@ -21,3 +21,6 @@ services:
 networks:
   coffee-net:
     driver: bridge
+
+volumes:
+  data_volume:
