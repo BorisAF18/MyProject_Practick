@@ -12,11 +12,11 @@
     const ctx = document.getElementById('priceChart').getContext('2d');
     const chart = new Chart(ctx, {
       type: 'line',
-       {
+      data: {
         labels: [],
         datasets: [{
           label: 'Цена (руб)',
-           [],
+          data: [],
           borderColor: 'rgb(75, 192, 192)',
           tension: 0.1
         }]
